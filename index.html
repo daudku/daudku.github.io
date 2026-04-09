@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daud Ku | System Architect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    body { background: radial-gradient(circle at 20% 20%, #0f172a, #000); }
+    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
+  </style>
+</head>
+<body class="text-white scroll-smooth">
+
+<!-- NAVBAR -->
+<nav class="fixed w-full z-50 glass border-b border-white/10">
+  <div class="max-w-6xl mx-auto flex justify-between p-4">
+    <h1 class="font-bold text-xl">Daud Ku</h1>
+    <div class="space-x-6 text-sm">
+      <a href="#about">About</a>
+      <a href="#projects">Work</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="h-screen flex flex-col justify-center items-center text-center px-6">
+  <h1 class="text-6xl md:text-7xl font-extrabold mb-6" data-aos="fade-up">
+    I Build Real Systems
+  </h1>
+  <p class="text-xl text-gray-300 max-w-2xl" data-aos="fade-up" data-aos-delay="200">
+    .NET Engineer focused on scalable government systems, AI automation, and high-performance backend architecture.
+  </p>
+  <div class="mt-8" data-aos="fade-up" data-aos-delay="400">
+    <a href="#projects" class="bg-white text-black px-6 py-3 rounded-full font-semibold mr-4">View Work</a>
+    <a href="#contact" class="border px-6 py-3 rounded-full">Hire Me</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center py-16">
+  <div><h3 class="text-3xl font-bold">10+</h3><p class="text-gray-400 text-sm">Projects</p></div>
+  <div><h3 class="text-3xl font-bold">1000+</h3><p class="text-gray-400 text-sm">Users Impacted</p></div>
+  <div><h3 class="text-3xl font-bold">99.9%</h3><p class="text-gray-400 text-sm">System Stability</p></div>
+  <div><h3 class="text-3xl font-bold">.NET</h3><p class="text-gray-400 text-sm">Core Stack</p></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="max-w-4xl mx-auto py-24 px-6 text-center" data-aos="fade-up">
+  <h2 class="text-3xl font-bold mb-6">About</h2>
+  <p class="text-gray-400">
+    Saya membangun sistem yang benar-benar digunakan. Fokus pada performa, keamanan, dan efisiensi untuk lingkungan pemerintahan.
+  </p>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="max-w-6xl mx-auto py-24 px-6">
+  <h2 class="text-3xl font-bold mb-12">Selected Work</h2>
+
+  <div class="space-y-20">
+
+    <div class="grid md:grid-cols-2 gap-10 items-center" data-aos="fade-up">
+      <img class="rounded-xl shadow-2xl" src="https://image.thum.io/get/width/1000/https://pusdokkes.polri.go.id">
+      <div>
+        <h3 class="text-2xl font-bold mb-3">Pusdokkes Polri</h3>
+        <p class="text-gray-400 mb-4">Platform kesehatan skala institusi dengan sistem terintegrasi.</p>
+        <div class="flex flex-wrap gap-2 mb-4 text-xs">
+          <span class="bg-blue-500/20 px-3 py-1 rounded">ASP.NET Core</span>
+          <span class="bg-green-500/20 px-3 py-1 rounded">SQL Server</span>
+          <span class="bg-purple-500/20 px-3 py-1 rounded">API</span>
+        </div>
+        <a href="https://pusdokkes.polri.go.id" target="_blank" class="text-blue-400">Live →</a>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10 items-center" data-aos="fade-up">
+      <img class="rounded-xl shadow-2xl" src="https://image.thum.io/get/width/1000/https://simasdori.pusdokkes.polri.go.id">
+      <div>
+        <h3 class="text-2xl font-bold mb-3">SIMASDORI</h3>
+        <p class="text-gray-400 mb-4">Sistem internal untuk pengelolaan data operasional.</p>
+        <div class="flex flex-wrap gap-2 mb-4 text-xs">
+          <span class="bg-blue-500/20 px-3 py-1 rounded">.NET</span>
+          <span class="bg-yellow-500/20 px-3 py-1 rounded">Performance</span>
+          <span class="bg-red-500/20 px-3 py-1 rounded">Secure</span>
+        </div>
+        <a href="https://simasdori.pusdokkes.polri.go.id" target="_blank" class="text-green-400">Open →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" class="max-w-5xl mx-auto py-24 px-6 text-center" data-aos="fade-up">
+  <h2 class="text-3xl font-bold mb-10">Tech Stack</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-gray-300">
+    <div>ASP.NET Core</div>
+    <div>SQL Server</div>
+    <div>JavaScript</div>
+    <div>Mapbox</div>
+    <div>REST API</div>
+    <div>AI Integration</div>
+    <div>Geolocation</div>
+    <div>System Design</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="text-center py-24" data-aos="fade-up">
+  <h2 class="text-3xl font-bold mb-6">Let's Build Something Big</h2>
+  <p class="text-gray-400 mb-6">Available for collaboration & system development</p>
+  <p class="text-lg">daud@gmail.com</p>
+  <p class="text-gray-500">github.com/daudku</p>
+</section>
+
+<footer class="text-center py-6 text-gray-600 border-t border-white/10">
+  <p>© 2026 Daud Ku</p>
+</footer>
+
+<script>
+AOS.init({ once: true, duration: 1000 });
+</script>
+
+</body>
+</html>
