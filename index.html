@@ -1,129 +1,520 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daud Ku | System Architect</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <style>
-    body { background: radial-gradient(circle at 20% 20%, #0f172a, #000); }
-    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kan Udah Dibilang...</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { cursor: none; }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #09090b;
+            color: #e4e4e7;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+        #content-wrapper { position: relative; z-index: 10; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; transition: rotate 1.5s ease-in-out, scale 1.5s ease-in-out; }
+
+        .glass-card {
+            background: rgba(24, 24, 27, 0.5);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.15);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .floating { animation: floating 6s ease-in-out infinite; }
+        @keyframes floating { 0%, 100% { translate: 0 0px; } 50% { translate: 0 -12px; } }
+
+        .fade-in-up { animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; translate: 0 30px; }
+        @keyframes fadeInUp { to { opacity: 1; translate: 0 0; } }
+
+        .text-gradient {
+            background: linear-gradient(to right, #a78bfa, #3b82f6, #ec4899); background-size: 200% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: gradientMove 5s linear infinite;
+        }
+        @keyframes gradientMove { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+        /* FIX GLITCH CSS (Modern Clip-Path & Per-kata) */
+        .glitch-wrapper { position: relative; }
+        .glitch { position: relative; z-index: 1; display: inline-block; }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8; pointer-events: none;
+        }
+        .glitch::before {
+            left: 2px; text-shadow: -2px 0 #ff00c1;
+            animation: glitch-anim 4s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px; text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+            animation: glitch-anim2 4s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip-path: inset(10% 0 70% 0); } 20% { clip-path: inset(80% 0 5% 0); }
+            40% { clip-path: inset(40% 0 40% 0); } 60% { clip-path: inset(20% 0 60% 0); }
+            80% { clip-path: inset(60% 0 20% 0); } 100% { clip-path: inset(5% 0 85% 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip-path: inset(70% 0 10% 0); } 20% { clip-path: inset(15% 0 65% 0); }
+            40% { clip-path: inset(50% 0 30% 0); } 60% { clip-path: inset(5% 0 75% 0); }
+            80% { clip-path: inset(85% 0 5% 0); } 100% { clip-path: inset(35% 0 45% 0); }
+        }
+
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { translate: -2px 0; } 20%, 80% { translate: 3px 0; } 30%, 50%, 70% { translate: -5px 0; } 40%, 60% { translate: 5px 0; } }
+        
+        .spin-infinite { animation: spinBody 2s linear infinite; }
+        @keyframes spinBody { 100% { rotate: 360deg; } }
+        
+        .meltdown { animation: gravityFall 3s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards; pointer-events: none; }
+        @keyframes gravityFall { 0% { translate: 0 0; rotate: 0; opacity: 1; } 20% { translate: 0 -50px; rotate: -5deg; opacity: 1; } 100% { translate: 0 200vh; rotate: 45deg; opacity: 0; } }
+
+        .drunk-left { rotate: -4deg; scale: 1.05; }
+        .drunk-right { rotate: 4deg; scale: 1.05; }
+        .red-alert-card { border-color: rgba(239, 68, 68, 0.8) !important; box-shadow: 0 0 80px rgba(239, 68, 68, 0.5) !important; }
+
+        .cursor-dot { width: 8px; height: 8px; background-color: white; border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; box-shadow: 0 0 10px rgba(255,255,255,0.8); transition: width 0.2s, height 0.2s; transform: translate(-50%, -50%); }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transition: width 0.2s, height 0.2s, background-color 0.2s; transform: translate(-50%, -50%); }
+        .cursor-hover .cursor-dot { width: 12px; height: 12px; background-color: #a78bfa; }
+        .cursor-hover .cursor-outline { width: 60px; height: 60px; border-color: rgba(167,139,250,0.5); background-color: rgba(167,139,250,0.1); }
+        @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } :root { cursor: auto; } }
+        
+        .ghost-cursor { width: 8px; height: 8px; background-color: #ef4444; border-radius: 50%; position: fixed; pointer-events: none; z-index: 9000; box-shadow: 0 0 10px rgba(239,68,68,0.8); transition: opacity 2s; transform: translate(-50%, -50%); }
+
+        #overlay-layer { position: fixed; inset: 0; z-index: 9900; pointer-events: none; }
+        #overlay-layer > * { pointer-events: auto; }
+
+        #toast-container { position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 9950; }
+        .toast { background: rgba(24, 24, 27, 0.95); backdrop-filter: blur(10px); border-left: 4px solid #a78bfa; padding: 12px 20px; border-radius: 8px; color: white; font-family: 'Space Grotesk', sans-serif; font-size: 0.875rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); animation: slideInRight 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; display: flex; align-items: center; gap: 12px; max-width: 300px; width: 100%;}
+        .toast.fade-out { animation: slideOutRight 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes slideInRight { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+
+        #quota-alert { position: absolute; top: -100px; left: 50%; transform: translateX(-50%); background: #ef4444; color: white; font-weight: bold; padding: 15px 20px; border-radius: 0 0 15px 15px; box-shadow: 0 10px 25px rgba(239,68,68,0.5); transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-family: 'Space Grotesk', sans-serif; text-align: center; width: 90%; max-width: 400px; z-index: 9990;}
+        #quota-alert.show { top: 0; }
+
+        #cs-chat { position: absolute; bottom: -100%; right: 20px; width: 90%; max-width: 280px; background: #fff; border-radius: 12px 12px 0 0; box-shadow: 0 -5px 25px rgba(0,0,0,0.3); transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-family: 'Inter', sans-serif; color: #18181b; overflow: hidden; z-index: 9910;}
+        #cs-chat.show { bottom: 0; }
+        @media (max-width: 400px) { #cs-chat { right: 5%; width: 90%; } }
+        .cs-header { background: #3b82f6; padding: 12px; color: white; font-weight: 600; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;}
+        .cs-body { padding: 15px; font-size: 0.875rem; }
+        .cs-btn { background: #f4f4f5; border: 1px solid #e4e4e7; padding: 8px; border-radius: 6px; margin-top: 12px; cursor: pointer; width: 100%; font-weight: 500; transition: 0.2s;}
+        .cs-btn:hover { background: #e4e4e7; }
+        
+        #fake-captcha { z-index: 9999; pointer-events: auto; }
+        #troll-btn { transition: translate 0.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 20; }
+    </style>
 </head>
-<body class="text-white scroll-smooth">
+<body oncontextmenu="return false;">
+    
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
 
-<!-- NAVBAR -->
-<nav class="fixed w-full z-50 glass border-b border-white/10">
-  <div class="max-w-6xl mx-auto flex justify-between p-4">
-    <h1 class="font-bold text-xl">Daud Ku</h1>
-    <div class="space-x-6 text-sm">
-      <a href="#about">About</a>
-      <a href="#projects">Work</a>
-      <a href="#stack">Stack</a>
-      <a href="#contact">Contact</a>
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="content-wrapper" class="p-4">
+        <main id="main-card" class="glass-card rounded-3xl p-6 sm:p-10 max-w-lg w-[95%] max-h-[90vh] overflow-y-auto hide-scrollbar flex flex-col items-center cursor-default floating relative fade-in-up">
+            
+            <div class="absolute -top-20 -left-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -right-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-zinc-800/60 border border-zinc-700/50 text-[10px] sm:text-xs text-zinc-400 font-space tracking-wide shadow-inner">
+                <span id="status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="status-text">STATUS: TERDETEKSI ORANG NGEYEL</span>
+            </div>
+
+            <!-- Teks Glitch yang sudah disempurnakan (Per-kata) -->
+            <div class="glitch-wrapper mb-2 w-full mt-2">
+                <h1 id="main-title" class="font-space text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-center leading-tight">
+                    <span class="glitch" data-text="Udah dilarang,">Udah dilarang,</span> 
+                    <br class="sm:hidden">
+                    <span class="glitch text-gradient" data-text="masih aja">masih aja</span> 
+                    <span class="glitch" data-text="diklik.">diklik.</span>
+                </h1>
+            </div>
+            
+            <div class="flex items-center justify-center gap-2 text-zinc-400 font-medium mb-6 mt-2">
+                <p class="text-sm sm:text-lg text-center">Kepo atau emang batu?</p>
+                <span id="emoji-target" class="text-xl sm:text-2xl hover:rotate-12 hover:scale-125 transition-transform duration-300 inline-block cursor-pointer interactive">🗿</span>
+            </div>
+
+            <div class="w-full bg-zinc-950/80 rounded-xl p-3 sm:p-4 font-space text-xs sm:text-sm border border-zinc-800/80 text-zinc-500 relative shadow-inner mb-6 z-10">
+                <div class="flex gap-1.5 mb-3">
+                    <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+                </div>
+                <div id="terminal-text" class="space-y-1">
+                    <p class="text-emerald-400/80">> Initializing anti_ngeyel_system.exe...</p>
+                    <p class="text-zinc-600">> Status pelanggaran: TERKONFIRMASI</p>
+                    <p class="text-zinc-600">> Alasan kunjungan: Terlalu Kepo</p>
+                    
+                    <div id="fake-hack-text" class="text-rose-400 font-bold hidden flex-col space-y-1 mt-2 p-2 bg-rose-500/10 rounded border border-rose-500/20 max-h-24 overflow-y-auto hide-scrollbar">
+                        <p class="text-rose-500">> [WARNING] Memproses hukuman...</p>
+                    </div>
+                    <p class="text-indigo-400/90 mt-2 font-bold pt-1 border-t border-zinc-800/50">> Waktu ngeyel terbuang: <span id="time-wasted">0</span> detik.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 w-full justify-center items-center z-20">
+                <button id="reveal-btn" class="interactive px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full font-space text-sm transition-all duration-300 hover:shadow-[0_0_15px_rgba(167,139,250,0.2)] active:scale-95 w-full sm:w-auto text-white">
+                    Ya Maap 🙏
+                </button>
+                <button id="troll-btn" class="interactive px-5 py-2.5 bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/50 text-indigo-300 rounded-full font-space text-sm font-bold shadow-[0_0_15px_rgba(99,102,241,0.2)] w-full sm:w-auto">
+                    🚨 Kenapa Dilarang?
+                </button>
+            </div>
+            
+            <p id="secret-msg" class="hidden text-xs sm:text-sm text-rose-400/80 mt-5 font-space text-center animate-pulse border border-rose-500/20 bg-rose-500/5 p-2 rounded-lg w-full">
+                Tahu gitu ngapain diklik dari awal? Tutup tabnya sekarang!
+            </p>
+
+            <button id="meltdown-btn" class="absolute bottom-2 right-4 text-[9px] text-zinc-600 hover:text-red-500 transition-colors opacity-30 hover:opacity-100 cursor-crosshair font-space tracking-widest uppercase interactive">DO NOT CLICK</button>
+        </main>
     </div>
-  </div>
-</nav>
 
-<!-- HERO -->
-<section class="h-screen flex flex-col justify-center items-center text-center px-6">
-  <h1 class="text-6xl md:text-7xl font-extrabold mb-6" data-aos="fade-up">
-    I Build Real Systems
-  </h1>
-  <p class="text-xl text-gray-300 max-w-2xl" data-aos="fade-up" data-aos-delay="200">
-    .NET Engineer focused on scalable government systems, AI automation, and high-performance backend architecture.
-  </p>
-  <div class="mt-8" data-aos="fade-up" data-aos-delay="400">
-    <a href="#projects" class="bg-white text-black px-6 py-3 rounded-full font-semibold mr-4">View Work</a>
-    <a href="#contact" class="border px-6 py-3 rounded-full">Hire Me</a>
-  </div>
-</section>
-
-<!-- STATS -->
-<section class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center py-16">
-  <div><h3 class="text-3xl font-bold">10+</h3><p class="text-gray-400 text-sm">Projects</p></div>
-  <div><h3 class="text-3xl font-bold">1000+</h3><p class="text-gray-400 text-sm">Users Impacted</p></div>
-  <div><h3 class="text-3xl font-bold">99.9%</h3><p class="text-gray-400 text-sm">System Stability</p></div>
-  <div><h3 class="text-3xl font-bold">.NET</h3><p class="text-gray-400 text-sm">Core Stack</p></div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" class="max-w-4xl mx-auto py-24 px-6 text-center" data-aos="fade-up">
-  <h2 class="text-3xl font-bold mb-6">About</h2>
-  <p class="text-gray-400">
-    Saya membangun sistem yang benar-benar digunakan. Fokus pada performa, keamanan, dan efisiensi untuk lingkungan pemerintahan.
-  </p>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects" class="max-w-6xl mx-auto py-24 px-6">
-  <h2 class="text-3xl font-bold mb-12">Selected Work</h2>
-
-  <div class="space-y-20">
-
-    <div class="grid md:grid-cols-2 gap-10 items-center" data-aos="fade-up">
-      <img class="rounded-xl shadow-2xl" src="https://image.thum.io/get/width/1000/https://pusdokkes.polri.go.id">
-      <div>
-        <h3 class="text-2xl font-bold mb-3">Pusdokkes Polri</h3>
-        <p class="text-gray-400 mb-4">Platform kesehatan skala institusi dengan sistem terintegrasi.</p>
-        <div class="flex flex-wrap gap-2 mb-4 text-xs">
-          <span class="bg-blue-500/20 px-3 py-1 rounded">ASP.NET Core</span>
-          <span class="bg-green-500/20 px-3 py-1 rounded">SQL Server</span>
-          <span class="bg-purple-500/20 px-3 py-1 rounded">API</span>
+    <!-- OVERLAYS -->
+    <div id="overlay-layer">
+        <div id="toast-container"></div>
+        <div id="quota-alert">⚠️ PERINGATAN: Kuota Internet Anda Tersedot 5GB!</div>
+        
+        <div id="cs-chat">
+            <div class="cs-header">
+                <span>Customer Service</span>
+                <span id="cs-close" class="cursor-pointer font-bold interactive px-2 hover:text-red-300">X</span>
+            </div>
+            <div class="cs-body" id="cs-body-content">
+                <p>Halo! Sepertinya kamu nge-stuck di halaman ini karena ga baca peringatan ya?</p>
+                <p class="mt-2 font-bold text-blue-600">Mau dibantu keluar?</p>
+                <button class="cs-btn interactive" id="cs-btn-yes">Mau dong kak 😭</button>
+            </div>
         </div>
-        <a href="https://pusdokkes.polri.go.id" target="_blank" class="text-blue-400">Live →</a>
-      </div>
-    </div>
 
-    <div class="grid md:grid-cols-2 gap-10 items-center" data-aos="fade-up">
-      <img class="rounded-xl shadow-2xl" src="https://image.thum.io/get/width/1000/https://simasdori.pusdokkes.polri.go.id">
-      <div>
-        <h3 class="text-2xl font-bold mb-3">SIMASDORI</h3>
-        <p class="text-gray-400 mb-4">Sistem internal untuk pengelolaan data operasional.</p>
-        <div class="flex flex-wrap gap-2 mb-4 text-xs">
-          <span class="bg-blue-500/20 px-3 py-1 rounded">.NET</span>
-          <span class="bg-yellow-500/20 px-3 py-1 rounded">Performance</span>
-          <span class="bg-red-500/20 px-3 py-1 rounded">Secure</span>
+        <div id="fake-captcha" class="hidden absolute inset-0 bg-black/85 backdrop-blur-sm items-center justify-center fade-in-up">
+            <div class="bg-white p-5 sm:p-6 rounded-lg shadow-2xl flex flex-col items-center max-w-[90%] sm:max-w-sm w-full mx-4">
+                <h3 class="text-gray-800 font-bold mb-4 w-full text-left">Pemeriksaan Keamanan</h3>
+                <div class="w-full flex items-center gap-3 border border-gray-300 p-3 sm:p-4 rounded bg-gray-50">
+                    <input type="checkbox" id="captcha-checkbox" class="w-5 h-5 cursor-pointer">
+                    <label for="captcha-checkbox" class="text-gray-700 font-medium font-sans cursor-pointer text-xs sm:text-sm">Saya bukan orang ngeyel</label>
+                    <div class="ml-auto flex flex-col items-center">
+                        <div class="flex gap-1 mb-1">
+                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-full"></div>
+                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-full"></div>
+                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-full"></div>
+                        </div>
+                        <span class="text-[8px] text-gray-500 mt-1 font-bold">reKOCAK</span>
+                    </div>
+                </div>
+                <p id="captcha-error" class="text-red-500 text-xs mt-4 hidden font-medium text-center bg-red-50 p-2 rounded w-full border border-red-200">Verifikasi gagal. Anda terdeteksi sebagai 'Orang Kepo'.</p>
+            </div>
         </div>
-        <a href="https://simasdori.pusdokkes.polri.go.id" target="_blank" class="text-green-400">Open →</a>
-      </div>
     </div>
 
-  </div>
-</section>
+    <script>
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        const isHoverable = window.matchMedia('(hover: hover)').matches;
 
-<!-- STACK -->
-<section id="stack" class="max-w-5xl mx-auto py-24 px-6 text-center" data-aos="fade-up">
-  <h2 class="text-3xl font-bold mb-10">Tech Stack</h2>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-gray-300">
-    <div>ASP.NET Core</div>
-    <div>SQL Server</div>
-    <div>JavaScript</div>
-    <div>Mapbox</div>
-    <div>REST API</div>
-    <div>AI Integration</div>
-    <div>Geolocation</div>
-    <div>System Design</div>
-  </div>
-</section>
+        if (isHoverable) {
+            let cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2;
+            let outlineX = cursorX, outlineY = cursorY;
 
-<!-- CONTACT -->
-<section id="contact" class="text-center py-24" data-aos="fade-up">
-  <h2 class="text-3xl font-bold mb-6">Let's Build Something Big</h2>
-  <p class="text-gray-400 mb-6">Available for collaboration & system development</p>
-  <p class="text-lg">daud@gmail.com</p>
-  <p class="text-gray-500">github.com/daudku</p>
-</section>
+            window.addEventListener('mousemove', (e) => {
+                cursorX = e.clientX; cursorY = e.clientY;
+                cursorDot.style.left = `${cursorX}px`; cursorDot.style.top = `${cursorY}px`;
+            });
 
-<footer class="text-center py-6 text-gray-600 border-t border-white/10">
-  <p>© 2026 Daud Ku</p>
-</footer>
+            function animateCursor() {
+                outlineX += (cursorX - outlineX) * 0.15;
+                outlineY += (cursorY - outlineY) * 0.15;
+                cursorOutline.style.left = `${outlineX}px`; cursorOutline.style.top = `${outlineY}px`;
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
 
-<script>
-AOS.init({ once: true, duration: 1000 });
-</script>
+            document.querySelectorAll('.interactive').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+        }
 
+        const toastContainer = document.getElementById('toast-container');
+        function showAchievement(icon, title, desc, customBorder = '#a78bfa') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderLeftColor = customBorder;
+            toast.innerHTML = `
+                <div class="text-2xl sm:text-3xl">${icon}</div>
+                <div class="flex flex-col">
+                    <span class="text-[9px] sm:text-[10px] text-zinc-400 font-bold uppercase tracking-wider mb-0.5">Peringatan Sistem</span>
+                    <span class="font-bold text-white text-sm leading-tight">${title}</span>
+                    <span class="text-[11px] sm:text-xs text-zinc-300 mt-1">${desc}</span>
+                </div>
+            `;
+            toastContainer.appendChild(toast);
+            setTimeout(() => { toast.classList.add('fade-out'); setTimeout(() => toast.remove(), 500); }, 5000);
+        }
+
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            showAchievement('🕵️', 'Ngapain Tuh?', 'Mau cari celah pake Inspect Element ya? Ga mempan bos!', '#ef4444');
+        });
+
+        let ghostCount = 0;
+        document.addEventListener('click', (e) => {
+            const tag = e.target.tagName;
+            if (['BUTTON','INPUT','LABEL'].includes(tag) || e.target.closest('#overlay-layer') || e.target.closest('#content-wrapper') !== null && e.target.tagName !== 'MAIN') return;
+            
+            ghostCount++;
+            const ghost = document.createElement('div');
+            ghost.className = 'ghost-cursor';
+            ghost.style.left = `${e.clientX}px`; ghost.style.top = `${e.clientY}px`;
+            document.body.appendChild(ghost);
+
+            if (ghostCount === 5) showAchievement('🦠', 'Jorok', 'Layar kamu makin kotor tuh gara-gara diklik sembarangan.');
+            if (ghostCount === 15) {
+                document.getElementById('content-wrapper').classList.add('spin-infinite');
+                showAchievement('🌪️', 'MABOK KAN', 'Kebanyakan klik! Udah dibilang jangan diapa-apain!');
+                setTimeout(() => document.getElementById('content-wrapper').classList.remove('spin-infinite'), 4000);
+            }
+        });
+
+        const captchaModal = document.getElementById('fake-captcha');
+        const captchaCheckbox = document.getElementById('captcha-checkbox');
+        const captchaError = document.getElementById('captcha-error');
+
+        captchaCheckbox.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                captchaCheckbox.disabled = true;
+                setTimeout(() => {
+                    captchaError.classList.remove('hidden');
+                    captchaCheckbox.checked = false; captchaCheckbox.disabled = false; 
+                    showAchievement('🤖', 'Ngeyel Detected', 'Kamu ketahuan aslinya ngeyel.', '#ef4444');
+                }, 1200);
+            }
+        });
+
+        document.getElementById('meltdown-btn').addEventListener('click', () => {
+            document.getElementById('main-card').classList.add('meltdown');
+            showAchievement('💥', 'TOMBOL KIAMAT', 'Yah... Hancur deh. Makanya dibilang JANGAN KLIK!', '#ef4444');
+            if (triggerRedAlert) triggerRedAlert();
+        });
+
+        let secondsWasted = 0;
+        const timeDisplay = document.getElementById('time-wasted');
+        const fakeHackArea = document.getElementById('fake-hack-text');
+        const contentWrapper = document.getElementById('content-wrapper');
+        let isHacking = false, isDrunk = false;
+
+        setInterval(() => {
+            secondsWasted++;
+            timeDisplay.innerText = secondsWasted;
+
+            if (secondsWasted === 10) showAchievement('🥉', 'Batu Level 1', '10 detik berlalu nungguin hal yang dilarang.');
+            
+            if (secondsWasted === 15 && !isHacking) {
+                isHacking = true;
+                fakeHackArea.classList.remove('hidden');
+                fakeHackArea.classList.add('flex');
+                let delay = 0;
+                ["> Menganalisis tingkat kepo...", "> Mengakses kamera depan...", "> Menyiapkan denda klik sembarangan...", "> Canda denda 🤡"].forEach((msg, idx, arr) => {
+                    setTimeout(() => {
+                        const p = document.createElement('p'); p.innerText = msg;
+                        if(idx === arr.length - 1) { p.className = "text-emerald-400"; showAchievement('🤡', 'Kena Mental', 'Panik gak? Makanya nurut kalo dikasih tau.'); }
+                        fakeHackArea.appendChild(p); fakeHackArea.scrollTop = fakeHackArea.scrollHeight;
+                    }, delay += (idx === arr.length -1 ? 2000 : 1200));
+                });
+            }
+
+            if (secondsWasted === 25) {
+                isDrunk = true;
+                contentWrapper.classList.add('drunk-left');
+                showAchievement('🥴', 'Mulai Pusing?', 'Lama-lama layarnya miring nih karena kamu ga nurut.');
+            }
+
+            if (isDrunk && secondsWasted > 25 && secondsWasted % 4 === 0) {
+                if (contentWrapper.classList.contains('drunk-left')) {
+                    contentWrapper.classList.replace('drunk-left', 'drunk-right');
+                } else {
+                    contentWrapper.classList.replace('drunk-right', 'drunk-left');
+                }
+            }
+
+            if (secondsWasted === 35) document.getElementById('cs-chat').classList.add('show');
+            if (secondsWasted === 45) {
+                const alertEl = document.getElementById('quota-alert');
+                alertEl.classList.add('show');
+                setTimeout(() => alertEl.classList.remove('show'), 4000);
+            }
+            if (secondsWasted === 55) showAchievement('🥇', 'Suhu Gabut', 'Hampir semenit terbuang sia-sia memandangi layar ini.');
+            if (secondsWasted === 65) {
+                captchaModal.classList.remove('hidden');
+                captchaModal.classList.add('flex');
+                showAchievement('🛑', 'Final Boss', 'Sebagai penutup, tes dulu lu robot atau manusia ngeyel.');
+            }
+        }, 1000);
+
+        const revealBtn = document.getElementById('reveal-btn');
+        revealBtn.addEventListener('click', () => {
+            document.getElementById('secret-msg').classList.remove('hidden');
+            revealBtn.innerText = "Keputusan Bagus"; revealBtn.classList.add('opacity-50', 'pointer-events-none');
+        });
+
+        const emoji = document.getElementById('emoji-target');
+        emoji.addEventListener('click', () => {
+            const original = emoji.innerText; emoji.innerText = '🤡';
+            setTimeout(() => { emoji.innerText = original; }, 1000);
+        });
+
+        const trollBtn = document.getElementById('troll-btn');
+        function moveButton() {
+            const randomX = (Math.random() - 0.5) * 100; const randomY = (Math.random() - 0.5) * 60;
+            trollBtn.style.translate = `${randomX}px ${randomY}px`;
+        }
+        trollBtn.addEventListener('mouseenter', moveButton);
+        trollBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); }, {passive: false});
+        trollBtn.addEventListener('click', () => {
+            showAchievement('😱', 'Hacker?!', 'Kok bisa keklik?!');
+            trollBtn.innerText = "Rahasia: Gaada Rahasia"; trollBtn.style.pointerEvents = "none";
+            document.getElementById('content-wrapper').classList.add('shake');
+            setTimeout(() => document.getElementById('content-wrapper').classList.remove('shake'), 500);
+        });
+
+        const csClose = document.getElementById('cs-close');
+        const csBtnYes = document.getElementById('cs-btn-yes');
+        const csBody = document.getElementById('cs-body-content');
+
+        csBtnYes.addEventListener('click', () => {
+            csBody.innerHTML = '<p class="text-red-500 font-bold">WKWK NGIMPI! Makanya nurut tulisan di Bio! Cari jalan keluar sendiri sana!</p>';
+        });
+
+        csClose.addEventListener('click', () => {
+            document.getElementById('cs-chat').classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('cs-chat').classList.add('show');
+                csBody.innerHTML = '<p class="text-red-600 font-bold text-sm sm:text-[15px]">KOK DITUTUP?! ORANG LAGI NAWARIN BANTUAN JUGA! DASAR BATU!</p>';
+                csClose.style.display = 'none'; 
+            }, 2000);
+        });
+
+        let triggerRedAlert = null;
+
+        window.addEventListener('load', function() {
+            const canvas = document.querySelector('#bg-canvas');
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x09090b, 0.15); 
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.z = 4;
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = window.innerWidth > 768 ? 1500 : 700;
+            const posArray = new Float32Array(particlesCount * 3);
+            for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 12; }
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMaterial = new THREE.PointsMaterial({ size: 0.015, color: 0x8b5cf6, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending });
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            const knotGeometry = new THREE.TorusKnotGeometry(1.5, 0.4, 100, 16);
+            const knotMaterial = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.05 });
+            const torusKnot = new THREE.Mesh(knotGeometry, knotMaterial);
+            scene.add(torusKnot);
+
+            const icosaGeometry = new THREE.IcosahedronGeometry(2.5, 1);
+            const icosaMaterial = new THREE.MeshBasicMaterial({ color: 0xec4899, wireframe: true, transparent: true, opacity: 0.02 });
+            const icosahedron = new THREE.Mesh(icosaGeometry, icosaMaterial);
+            scene.add(icosahedron);
+
+            let mouseX = 0, mouseY = 0;
+            const windowHalfX = window.innerWidth / 2, windowHalfY = window.innerHeight / 2;
+            
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX) * 0.001;
+                mouseY = (event.clientY - windowHalfY) * 0.001;
+            });
+            
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            const clock = new THREE.Clock();
+            let isRedAlert = false;
+
+            triggerRedAlert = () => {
+                if(isRedAlert) return;
+                isRedAlert = true;
+                document.getElementById('main-card').classList.add('red-alert-card');
+                document.getElementById('status-dot').className = "w-2 h-2 rounded-full bg-red-600 animate-ping";
+                const statText = document.getElementById('status-text');
+                statText.innerText = "SYSTEM BREACHED: PENGUNJUNG NGE-CHEAT";
+                statText.classList.replace('text-zinc-400', 'text-red-400');
+                
+                const title = document.getElementById('main-title');
+                title.innerHTML = `
+                    <span class="glitch" data-text="UDAH DILARANG,">UDAH DILARANG,</span> 
+                    <br class="sm:hidden">
+                    <span class="glitch text-red-500" data-text="NGECHEAT PULA!">NGECHEAT PULA!</span>
+                `;
+                
+                const wrap = document.getElementById('content-wrapper');
+                wrap.classList.add('shake');
+                setTimeout(() => wrap.classList.remove('shake'), 600);
+                
+                showAchievement('🚨', 'RED ALERT', 'Hayo ngetik kode apaan tuh?!', '#ef4444');
+            };
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+
+                torusKnot.rotation.y = elapsedTime * 0.15; torusKnot.rotation.x = elapsedTime * 0.1;
+                icosahedron.rotation.y = elapsedTime * -0.05; icosahedron.rotation.z = elapsedTime * 0.05;
+                particlesMesh.rotation.y = elapsedTime * 0.03; particlesMesh.position.y = Math.sin(elapsedTime * 0.5) * 0.2; 
+
+                if (isRedAlert) {
+                    knotMaterial.color.setHSL(0, 1.0, 0.4); particlesMaterial.color.setHSL(0.05, 1.0, 0.5); 
+                    torusKnot.rotation.y += 0.05; icosahedron.rotation.x += 0.02; scene.fog.color.setHex(0x2a0000); 
+                } else {
+                    const hue = (elapsedTime * 0.05) % 1; 
+                    knotMaterial.color.setHSL(hue, 0.8, 0.5); particlesMaterial.color.setHSL((hue + 0.5) % 1, 0.8, 0.6); 
+                }
+
+                camera.position.x += (mouseX - camera.position.x) * 0.05; camera.position.y += (-mouseY - camera.position.y) * 0.05;
+                camera.lookAt(scene.position); renderer.render(scene, camera);
+            };
+            animate();
+        });
+
+        const secretCode = ['k','e','p','o'];
+        let codeIndex = 0;
+        window.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === secretCode[codeIndex]) {
+                codeIndex++;
+                if (codeIndex === secretCode.length) { if (triggerRedAlert) triggerRedAlert(); codeIndex = 0; }
+            } else { codeIndex = 0; }
+        });
+    </script>
 </body>
 </html>
