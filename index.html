@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kan Udah Dibilang...</title>
+    <title>Gaada Apa-apaan Disini</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -50,7 +50,6 @@
         }
         @keyframes gradientMove { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
-        /* FIX GLITCH CSS (Modern Clip-Path & Per-kata) */
         .glitch-wrapper { position: relative; }
         .glitch { position: relative; z-index: 1; display: inline-block; }
         .glitch::before, .glitch::after {
@@ -137,22 +136,22 @@
 
             <div class="flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-zinc-800/60 border border-zinc-700/50 text-[10px] sm:text-xs text-zinc-400 font-space tracking-wide shadow-inner">
                 <span id="status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span id="status-text">STATUS: TERDETEKSI ORANG NGEYEL</span>
+                <span id="status-text">STATUS: PENGUNJUNG KEPO TERDETEKSI</span>
             </div>
 
-            <!-- Teks Glitch yang sudah disempurnakan (Per-kata) -->
+            <!-- Teks Glitch yang sudah disesuaikan pesannya -->
             <div class="glitch-wrapper mb-2 w-full mt-2">
                 <h1 id="main-title" class="font-space text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-center leading-tight">
-                    <span class="glitch" data-text="Udah dilarang,">Udah dilarang,</span> 
+                    <span class="glitch" data-text="Gaada apa apaan">Gaada apa apaan</span> 
                     <br class="sm:hidden">
-                    <span class="glitch text-gradient" data-text="masih aja">masih aja</span> 
-                    <span class="glitch" data-text="diklik.">diklik.</span>
+                    <span class="glitch text-gradient" data-text="disini,">disini,</span> 
+                    <span class="glitch" data-text="jangan kepo!">jangan kepo!</span>
                 </h1>
             </div>
             
             <div class="flex items-center justify-center gap-2 text-zinc-400 font-medium mb-6 mt-2">
-                <p class="text-sm sm:text-lg text-center">Kepo atau emang batu?</p>
-                <span id="emoji-target" class="text-xl sm:text-2xl hover:rotate-12 hover:scale-125 transition-transform duration-300 inline-block cursor-pointer interactive">🗿</span>
+                <p class="text-sm sm:text-lg text-center">Beneran kosong, ngapain masih di sini?</p>
+                <span id="emoji-target" class="text-xl sm:text-2xl hover:rotate-12 hover:scale-125 transition-transform duration-300 inline-block cursor-pointer interactive">🥱</span>
             </div>
 
             <div class="w-full bg-zinc-950/80 rounded-xl p-3 sm:p-4 font-space text-xs sm:text-sm border border-zinc-800/80 text-zinc-500 relative shadow-inner mb-6 z-10">
@@ -162,38 +161,38 @@
                     <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
                 </div>
                 <div id="terminal-text" class="space-y-1">
-                    <p class="text-emerald-400/80">> Initializing anti_ngeyel_system.exe...</p>
-                    <p class="text-zinc-600">> Status pelanggaran: TERKONFIRMASI</p>
-                    <p class="text-zinc-600">> Alasan kunjungan: Terlalu Kepo</p>
+                    <p class="text-emerald-400/80">> Initializing anti_kepo_system.exe...</p>
+                    <p class="text-zinc-600">> Deteksi: TINGKAT KEKEPOAN MAKSIMAL</p>
+                    <p class="text-zinc-600">> Status: Nyari yang gaada</p>
                     
                     <div id="fake-hack-text" class="text-rose-400 font-bold hidden flex-col space-y-1 mt-2 p-2 bg-rose-500/10 rounded border border-rose-500/20 max-h-24 overflow-y-auto hide-scrollbar">
-                        <p class="text-rose-500">> [WARNING] Memproses hukuman...</p>
+                        <p class="text-rose-500">> [WARNING] Memproses pengusiran...</p>
                     </div>
-                    <p class="text-indigo-400/90 mt-2 font-bold pt-1 border-t border-zinc-800/50">> Waktu ngeyel terbuang: <span id="time-wasted">0</span> detik.</p>
+                    <p class="text-indigo-400/90 mt-2 font-bold pt-1 border-t border-zinc-800/50">> Waktu kepo terbuang: <span id="time-wasted">0</span> detik.</p>
                 </div>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3 w-full justify-center items-center z-20">
                 <button id="reveal-btn" class="interactive px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full font-space text-sm transition-all duration-300 hover:shadow-[0_0_15px_rgba(167,139,250,0.2)] active:scale-95 w-full sm:w-auto text-white">
-                    Ya Maap 🙏
+                    Iya Beneran Kosong 🙏
                 </button>
                 <button id="troll-btn" class="interactive px-5 py-2.5 bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/50 text-indigo-300 rounded-full font-space text-sm font-bold shadow-[0_0_15px_rgba(99,102,241,0.2)] w-full sm:w-auto">
-                    🚨 Kenapa Dilarang?
+                    🚨 Emang Ada Apa?
                 </button>
             </div>
             
             <p id="secret-msg" class="hidden text-xs sm:text-sm text-rose-400/80 mt-5 font-space text-center animate-pulse border border-rose-500/20 bg-rose-500/5 p-2 rounded-lg w-full">
-                Tahu gitu ngapain diklik dari awal? Tutup tabnya sekarang!
+                Udah dibilang gaada apa-apaan masih aja ditungguin. Tutup tabnya sekarang!
             </p>
 
-            <button id="meltdown-btn" class="absolute bottom-2 right-4 text-[9px] text-zinc-600 hover:text-red-500 transition-colors opacity-30 hover:opacity-100 cursor-crosshair font-space tracking-widest uppercase interactive">DO NOT CLICK</button>
+            <button id="meltdown-btn" class="absolute bottom-2 right-4 text-[9px] text-zinc-600 hover:text-red-500 transition-colors opacity-30 hover:opacity-100 cursor-crosshair font-space tracking-widest uppercase interactive">JANGAN DIKLIK</button>
         </main>
     </div>
 
     <!-- OVERLAYS -->
     <div id="overlay-layer">
         <div id="toast-container"></div>
-        <div id="quota-alert">⚠️ PERINGATAN: Kuota Internet Anda Tersedot 5GB!</div>
+        <div id="quota-alert">⚠️ PERINGATAN: Kuota Tersedot 5GB Buat Liatin Halaman Kosong!</div>
         
         <div id="cs-chat">
             <div class="cs-header">
@@ -201,18 +200,18 @@
                 <span id="cs-close" class="cursor-pointer font-bold interactive px-2 hover:text-red-300">X</span>
             </div>
             <div class="cs-body" id="cs-body-content">
-                <p>Halo! Sepertinya kamu nge-stuck di halaman ini karena ga baca peringatan ya?</p>
-                <p class="mt-2 font-bold text-blue-600">Mau dibantu keluar?</p>
+                <p>Halo! Masih betah aja nungguin di halaman kosong ini?</p>
+                <p class="mt-2 font-bold text-blue-600">Mau dibantu cari jalan keluar?</p>
                 <button class="cs-btn interactive" id="cs-btn-yes">Mau dong kak 😭</button>
             </div>
         </div>
 
         <div id="fake-captcha" class="hidden absolute inset-0 bg-black/85 backdrop-blur-sm items-center justify-center fade-in-up">
             <div class="bg-white p-5 sm:p-6 rounded-lg shadow-2xl flex flex-col items-center max-w-[90%] sm:max-w-sm w-full mx-4">
-                <h3 class="text-gray-800 font-bold mb-4 w-full text-left">Pemeriksaan Keamanan</h3>
+                <h3 class="text-gray-800 font-bold mb-4 w-full text-left">Pemeriksaan Kekepoan</h3>
                 <div class="w-full flex items-center gap-3 border border-gray-300 p-3 sm:p-4 rounded bg-gray-50">
                     <input type="checkbox" id="captcha-checkbox" class="w-5 h-5 cursor-pointer">
-                    <label for="captcha-checkbox" class="text-gray-700 font-medium font-sans cursor-pointer text-xs sm:text-sm">Saya bukan orang ngeyel</label>
+                    <label for="captcha-checkbox" class="text-gray-700 font-medium font-sans cursor-pointer text-xs sm:text-sm">Saya bukan orang kepo</label>
                     <div class="ml-auto flex flex-col items-center">
                         <div class="flex gap-1 mb-1">
                             <div class="w-2.5 h-2.5 bg-blue-500 rounded-full"></div>
@@ -222,7 +221,7 @@
                         <span class="text-[8px] text-gray-500 mt-1 font-bold">reKOCAK</span>
                     </div>
                 </div>
-                <p id="captcha-error" class="text-red-500 text-xs mt-4 hidden font-medium text-center bg-red-50 p-2 rounded w-full border border-red-200">Verifikasi gagal. Anda terdeteksi sebagai 'Orang Kepo'.</p>
+                <p id="captcha-error" class="text-red-500 text-xs mt-4 hidden font-medium text-center bg-red-50 p-2 rounded w-full border border-red-200">Verifikasi gagal. Anda terdeteksi sebagai 'Orang Paling Kepo'.</p>
             </div>
         </div>
     </div>
@@ -274,7 +273,7 @@
 
         document.addEventListener('contextmenu', (e) => {
             e.preventDefault();
-            showAchievement('🕵️', 'Ngapain Tuh?', 'Mau cari celah pake Inspect Element ya? Ga mempan bos!', '#ef4444');
+            showAchievement('🕵️', 'Ngapain Tuh?', 'Mau ngecek kode sumber ya? Tetep aja gaada isinya bos!', '#ef4444');
         });
 
         let ghostCount = 0;
@@ -288,10 +287,10 @@
             ghost.style.left = `${e.clientX}px`; ghost.style.top = `${e.clientY}px`;
             document.body.appendChild(ghost);
 
-            if (ghostCount === 5) showAchievement('🦠', 'Jorok', 'Layar kamu makin kotor tuh gara-gara diklik sembarangan.');
+            if (ghostCount === 5) showAchievement('🦠', 'Jorok', 'Ngapain klik-klik? Gaada tombol rahasia disini.');
             if (ghostCount === 15) {
                 document.getElementById('content-wrapper').classList.add('spin-infinite');
-                showAchievement('🌪️', 'MABOK KAN', 'Kebanyakan klik! Udah dibilang jangan diapa-apain!');
+                showAchievement('🌪️', 'MABOK KAN', 'Makanya dibilang gaada apa-apaan, malah klik sembarangan!');
                 setTimeout(() => document.getElementById('content-wrapper').classList.remove('spin-infinite'), 4000);
             }
         });
@@ -306,14 +305,14 @@
                 setTimeout(() => {
                     captchaError.classList.remove('hidden');
                     captchaCheckbox.checked = false; captchaCheckbox.disabled = false; 
-                    showAchievement('🤖', 'Ngeyel Detected', 'Kamu ketahuan aslinya ngeyel.', '#ef4444');
+                    showAchievement('🤖', 'Kepo Detected', 'Kamu emang ketahuan kepo akut.', '#ef4444');
                 }, 1200);
             }
         });
 
         document.getElementById('meltdown-btn').addEventListener('click', () => {
             document.getElementById('main-card').classList.add('meltdown');
-            showAchievement('💥', 'TOMBOL KIAMAT', 'Yah... Hancur deh. Makanya dibilang JANGAN KLIK!', '#ef4444');
+            showAchievement('💥', 'TOMBOL KIAMAT', 'Yah... Hancur deh. Kan dibilang JANGAN DIKLIK!', '#ef4444');
             if (triggerRedAlert) triggerRedAlert();
         });
 
@@ -327,17 +326,17 @@
             secondsWasted++;
             timeDisplay.innerText = secondsWasted;
 
-            if (secondsWasted === 10) showAchievement('🥉', 'Batu Level 1', '10 detik berlalu nungguin hal yang dilarang.');
+            if (secondsWasted === 10) showAchievement('🥉', 'Kepo Level 1', '10 detik berlalu nungguin hal yang gaada.');
             
             if (secondsWasted === 15 && !isHacking) {
                 isHacking = true;
                 fakeHackArea.classList.remove('hidden');
                 fakeHackArea.classList.add('flex');
                 let delay = 0;
-                ["> Menganalisis tingkat kepo...", "> Mengakses kamera depan...", "> Menyiapkan denda klik sembarangan...", "> Canda denda 🤡"].forEach((msg, idx, arr) => {
+                ["> Menganalisis wajah orang kepo...", "> Mengakses kamera depan...", "> Menyiapkan kejutan...", "> Gaada kejutan 🤡, kan gaada apa-apaan!"].forEach((msg, idx, arr) => {
                     setTimeout(() => {
                         const p = document.createElement('p'); p.innerText = msg;
-                        if(idx === arr.length - 1) { p.className = "text-emerald-400"; showAchievement('🤡', 'Kena Mental', 'Panik gak? Makanya nurut kalo dikasih tau.'); }
+                        if(idx === arr.length - 1) { p.className = "text-emerald-400"; showAchievement('🤡', 'Kena Mental', 'Panik ya? Makanya jangan kepo.'); }
                         fakeHackArea.appendChild(p); fakeHackArea.scrollTop = fakeHackArea.scrollHeight;
                     }, delay += (idx === arr.length -1 ? 2000 : 1200));
                 });
@@ -346,7 +345,7 @@
             if (secondsWasted === 25) {
                 isDrunk = true;
                 contentWrapper.classList.add('drunk-left');
-                showAchievement('🥴', 'Mulai Pusing?', 'Lama-lama layarnya miring nih karena kamu ga nurut.');
+                showAchievement('🥴', 'Mulai Pusing?', 'Layarnya ikutan capek liat kamu kepo nyariin yang gaada.');
             }
 
             if (isDrunk && secondsWasted > 25 && secondsWasted % 4 === 0) {
@@ -358,16 +357,19 @@
             }
 
             if (secondsWasted === 35) document.getElementById('cs-chat').classList.add('show');
+            
             if (secondsWasted === 45) {
                 const alertEl = document.getElementById('quota-alert');
                 alertEl.classList.add('show');
                 setTimeout(() => alertEl.classList.remove('show'), 4000);
             }
-            if (secondsWasted === 55) showAchievement('🥇', 'Suhu Gabut', 'Hampir semenit terbuang sia-sia memandangi layar ini.');
+            
+            if (secondsWasted === 55) showAchievement('🥇', 'Suhu Kepo', 'Hampir semenit terbuang sia-sia nungguin layar kosong ini.');
+            
             if (secondsWasted === 65) {
                 captchaModal.classList.remove('hidden');
                 captchaModal.classList.add('flex');
-                showAchievement('🛑', 'Final Boss', 'Sebagai penutup, tes dulu lu robot atau manusia ngeyel.');
+                showAchievement('🛑', 'Final Boss', 'Sebagai penutup, mari kita tes seberapa kepo kamu.');
             }
         }, 1000);
 
@@ -391,8 +393,8 @@
         trollBtn.addEventListener('mouseenter', moveButton);
         trollBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); }, {passive: false});
         trollBtn.addEventListener('click', () => {
-            showAchievement('😱', 'Hacker?!', 'Kok bisa keklik?!');
-            trollBtn.innerText = "Rahasia: Gaada Rahasia"; trollBtn.style.pointerEvents = "none";
+            showAchievement('😱', 'Dapat?!', 'Kok bisa keklik?!');
+            trollBtn.innerText = "Kan Udah Dibilang Kosong!"; trollBtn.style.pointerEvents = "none";
             document.getElementById('content-wrapper').classList.add('shake');
             setTimeout(() => document.getElementById('content-wrapper').classList.remove('shake'), 500);
         });
@@ -402,14 +404,14 @@
         const csBody = document.getElementById('cs-body-content');
 
         csBtnYes.addEventListener('click', () => {
-            csBody.innerHTML = '<p class="text-red-500 font-bold">WKWK NGIMPI! Makanya nurut tulisan di Bio! Cari jalan keluar sendiri sana!</p>';
+            csBody.innerHTML = '<p class="text-red-500 font-bold">WKWK NGIMPI! Kan dibilang gaada apa-apaan! Cari aja sendiri tombol exitnya!</p>';
         });
 
         csClose.addEventListener('click', () => {
             document.getElementById('cs-chat').classList.remove('show');
             setTimeout(() => {
                 document.getElementById('cs-chat').classList.add('show');
-                csBody.innerHTML = '<p class="text-red-600 font-bold text-sm sm:text-[15px]">KOK DITUTUP?! ORANG LAGI NAWARIN BANTUAN JUGA! DASAR BATU!</p>';
+                csBody.innerHTML = '<p class="text-red-600 font-bold text-sm sm:text-[15px]">KOK DITUTUP?! ORANG LAGI NAWARIN JALAN KELUAR! DASAR KEPO!</p>';
                 csClose.style.display = 'none'; 
             }, 2000);
         });
@@ -468,21 +470,21 @@
                 document.getElementById('main-card').classList.add('red-alert-card');
                 document.getElementById('status-dot').className = "w-2 h-2 rounded-full bg-red-600 animate-ping";
                 const statText = document.getElementById('status-text');
-                statText.innerText = "SYSTEM BREACHED: PENGUNJUNG NGE-CHEAT";
+                statText.innerText = "SYSTEM BREACHED: PENGUNJUNG TERLALU KEPO";
                 statText.classList.replace('text-zinc-400', 'text-red-400');
                 
                 const title = document.getElementById('main-title');
                 title.innerHTML = `
-                    <span class="glitch" data-text="UDAH DILARANG,">UDAH DILARANG,</span> 
+                    <span class="glitch text-red-500" data-text="GAADA APA-APAAN,">GAADA APA-APAAN,</span> 
                     <br class="sm:hidden">
-                    <span class="glitch text-red-500" data-text="NGECHEAT PULA!">NGECHEAT PULA!</span>
+                    <span class="glitch text-red-500" data-text="MALAH NGE-CHEAT!">MALAH NGE-CHEAT!</span>
                 `;
                 
                 const wrap = document.getElementById('content-wrapper');
                 wrap.classList.add('shake');
                 setTimeout(() => wrap.classList.remove('shake'), 600);
                 
-                showAchievement('🚨', 'RED ALERT', 'Hayo ngetik kode apaan tuh?!', '#ef4444');
+                showAchievement('🚨', 'RED ALERT', 'Masih aja nyari rahasia pake keyboard!', '#ef4444');
             };
 
             const animate = () => {
